@@ -1,20 +1,40 @@
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+
+import LoginPage from './src/pages/LoginPage';
+import HomePage from './src/pages/HomePage';
+import DetalhesProdutoPage from './src/pages/DetalhesProdutoPage';
+import InfoGrupoPage from './src/pages/InfoGrupoPage';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+    <NavigationContainer>
       <StatusBar style="auto" />
-    </View>
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen
+          name="Login"
+          component={LoginPage}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Home"
+          component={HomePage}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DetalhesProduto"
+          component={DetalhesProdutoPage}
+          options={{ title: 'Detalhes do Produto' }}
+        />
+        <Stack.Screen
+          name="InfoGrupo"
+          component={InfoGrupoPage}
+          options={{ title: 'Informações do Grupo' }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
