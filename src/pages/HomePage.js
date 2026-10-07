@@ -9,10 +9,10 @@ import Botao from '../components/Botao';
 
 const CATEGORIAS = [
   { rotulo: 'Todos', valor: '' },
-  { rotulo: 'Eletrônicos', valor: 'electronics' },
-  { rotulo: 'Joias', valor: 'jewelery' },
-  { rotulo: 'Roupas Masculinas', valor: "men's clothing" },
-  { rotulo: 'Roupas Femininas', valor: "women's clothing" },
+  { rotulo: 'Smartphones', valor: 'smartphones' },
+  { rotulo: 'Laptops', valor: 'laptops' },
+  { rotulo: 'Fragrâncias', valor: 'fragrances' },
+  { rotulo: 'Skincare', valor: 'skincare' },
 ];
 
 export default function HomePage({ navigation }) {
@@ -42,11 +42,16 @@ export default function HomePage({ navigation }) {
     setCarregando(true);
     setErro('');
     try {
-      const url = categoriaSelecionada
-        ? `/products/category/${encodeURIComponent(categoriaSelecionada)}`
-        : '/products';
+      let url = '/products';
+
+      if (categoriaSelecionada) {
+        url = `/products/category/${categoriaSelecionada}`;
+      }
+
       const { data } = await api.get(url);
-      setProdutos(data);
+
+    
+      setProdutos(data.products || []);
     } catch (err) {
       console.error(err);
       setErro('Não foi possível carregar os produtos.');

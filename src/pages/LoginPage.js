@@ -21,7 +21,6 @@ export default function LoginPage({ navigation }) {
 
   async function entrar() {
     setErro('');
-
     if (!usuario.trim() || !senha.trim()) {
       setErro('Preencha usuário e senha.');
       return;
@@ -29,36 +28,25 @@ export default function LoginPage({ navigation }) {
 
     setCarregando(true);
     try {
-      const { data: usuarios } = await api.get('/users');
-      const usuarioExiste = usuarios.find(
-        (u) =>
-          u.username.toLowerCase() === usuario.trim().toLowerCase() &&
-          u.password === senha
-      );
-
-      if (!usuarioExiste) {
-        setErro('Usuário ou senha inválidos.');
-        return;
-      }
-
       const { data } = await api.post('/auth/login', {
         username: usuario.trim(),
         password: senha,
+        expiresInMins: 60,
       });
 
-      if (data && data.token) {
+      if (data && data.accessToken) {
         navigation.replace('Home');
       } else {
         setErro('Falha na autenticação. Tente novamente.');
       }
     } catch (err) {
       console.error(err);
-      if (err.response && err.response.status === 401) {
+      if (err.response && err.response.status === 400) {
         setErro('Usuário ou senha inválidos.');
       } else if (err.request) {
         setErro('Erro de conexão. Verifique sua internet.');
       } else {
-        setErro('Ocorreu um erro inesperado. Tente novamente.');
+        setErro('Ocorreu um erro inesperado.');
       }
     } finally {
       setCarregando(false);
@@ -66,19 +54,20 @@ export default function LoginPage({ navigation }) {
   }
 
   function preencherCredencialTeste() {
-    setUsuario('mor_2314');
-    setSenha('83r5^_');
+    setUsuario('emilys');
+    setSenha('emilyspass');
     setErro('');
-  }
+    }
 
   function mostrarUsuarios() {
     Alert.alert(
-      'Usuários disponíveis',
-      'Consulte:\nhttps://fakestoreapi.com/users\n\n' +
+      'Credenciais de teste (DummyJSON)',
+      'Consulte: https://dummyjson.com/users\n\n' +
         'Exemplos:\n' +
-        '• johnd / m38rmF$\n' +
-        '• mor_2314 / 83r5^_\n' +
-        '• kevinryan / kev02937@',
+        '• emilys / emilyspass\n' +
+        '• michaelw / michaelwpass\n' +
+        '• sophiab / sophiabpass\n' +
+        '• jamesd / jamesdpass',
       [{ text: 'OK' }]
     );
   }

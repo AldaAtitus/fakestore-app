@@ -5,7 +5,7 @@ import { formatarPreco } from '../utils/formatoPreco';
 export default function CartaoProduto({ produto, aoPressionar }) {
   return (
     <TouchableOpacity style={estilos.cartao} onPress={aoPressionar} activeOpacity={0.8}>
-      <Image source={{ uri: produto.image }} style={estilos.imagem} />
+      <Image source={{ uri: produto.thumbnail }} style={estilos.imagem} />
       <View style={estilos.informacoes}>
         <Text style={estilos.nome} numberOfLines={2}>
           {produto.title}
